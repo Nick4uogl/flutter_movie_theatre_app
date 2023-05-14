@@ -193,7 +193,6 @@ class TicketBarCode extends StatelessWidget {
       child: BarcodeWidget(
         barcode: Barcode.code128(),
         data: ticketId,
-        color: Colors.white,
         height: 40,
         drawText: false,
       ),

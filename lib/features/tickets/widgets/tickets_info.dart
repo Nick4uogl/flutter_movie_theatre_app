@@ -98,23 +98,33 @@ class _TicketInfoState extends State<TicketInfo> {
                     ]),
                   ),
                   Spacer(),
-                  IconButton(
-                    onPressed: () async {
-                      final controller = ScreenshotController();
-                      final bytes = await controller.captureFromWidget(Material(
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12.5),
+                    child: Material(
                         color: Colors.transparent,
-                        child: widget.buildWidget(),
-                      ));
-                      setState(() {
-                        imageBytes = bytes;
-                      });
-                      final temp = await getTemporaryDirectory();
-                      final path = '${temp.path}/image.jpg';
-                      File(path).writeAsBytesSync(bytes);
-                      await Share.shareFiles([path]);
-                    },
-                    icon: Icon(Icons.share, color: Color(0xff637394)),
-                  )
+                        child: InkWell(
+                          onTap: () async {
+                            final controller = ScreenshotController();
+                            final bytes =
+                                await controller.captureFromWidget(Material(
+                              color: Colors.transparent,
+                              child: widget.buildWidget(),
+                            ));
+                            setState(() {
+                              imageBytes = bytes;
+                            });
+                            final temp = await getTemporaryDirectory();
+                            final path = '${temp.path}/image.jpg';
+                            File(path).writeAsBytesSync(bytes);
+                            await Share.shareFiles([path]);
+                          },
+                          child: Ink(
+                            height: 25,
+                            width: 25,
+                            child: Icon(Icons.share, color: Color(0xff637394)),
+                          ),
+                        )),
+                  ),
                 ],
               )
             ],

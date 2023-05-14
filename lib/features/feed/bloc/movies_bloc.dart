@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:movie_theatre_app/features/feed/repositories/movies.dart';
+import 'package:movie_theatre_app/features/feed/repositories/movies_repository.dart';
 
 import '../models/movie_model.dart';
 
@@ -15,10 +15,11 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     on<SearchMovies>(_onSearchMovies);
   }
 
+  MoviesRepository moviesRepository = MoviesRepository();
+
   Future<void> _onSearchMovies(event, emit) async {
     try {
       emit(MoviesSearching());
-      MoviesRepository moviesRepository = MoviesRepository();
       List<MovieModel> movies =
           await moviesRepository.getMovies(event.date, name: event.name);
       emit(MoviesSearched(movies: movies));
@@ -30,8 +31,6 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   Future<void> _onLoadMovies(event, emit) async {
     try {
       emit(MoviesLoading());
-
-      MoviesRepository moviesRepository = MoviesRepository();
       List<MovieModel> movies = await moviesRepository.getMovies(event.date);
       emit(MoviesLoaded(movies: movies));
     } catch (e) {

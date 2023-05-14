@@ -53,7 +53,7 @@ class MovieSessionsBloc extends Bloc<MovieSessionsEvent, MovieSessionsState> {
       await bookRepository.bookSeats(event.seats, event.sessionId);
 
       var localSeats = List.generate(selectedSeats.length, (index) {
-        int expiredTime = DateTime.now().millisecondsSinceEpoch + 60000 * 3;
+        int expiredTime = DateTime.now().millisecondsSinceEpoch + 60000 * 15;
         return '${selectedSeats[index].id}-$expiredTime';
       });
       SharedPreferences sharedPreferences =
@@ -66,7 +66,7 @@ class MovieSessionsBloc extends Bloc<MovieSessionsEvent, MovieSessionsState> {
       emit(
         BookSeatsFailed(
             selectedSeats: selectedSeats,
-            errorText: 'An unexpected error occurred while signing in'),
+            errorText: 'An unexpected error occurred booking seats'),
       );
     }
   }
